@@ -4,6 +4,10 @@ import com.example.projecctbodima.dto.userDTO;
 import com.example.projecctbodima.entity.User;
 import com.example.projecctbodima.repository.IUserRepo;
 import com.example.projecctbodima.service.IUserService;
+import jakarta.transaction.Transactional;
+import org.apache.catalina.UserDatabase;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -18,6 +23,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public userDTO saveUser(userDTO userDTO) {
@@ -43,7 +51,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<userDTO> getAllUsers() {
-        return List.of();
+        List<User> userList = userRepo.findAll();
+        return modelMapper.map(userList, new TypeToken<List<userDTO>>(){}.getType());
+
     }
 
     @Override

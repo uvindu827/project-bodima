@@ -5,6 +5,8 @@ import com.example.projecctbodima.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/api/v1")
@@ -16,5 +18,10 @@ public class UserController {
     @PostMapping("/createuser")
     public userDTO createUser(@RequestBody userDTO userDTO) {
         return userService.saveUser(userDTO);
+    }
+
+    @GetMapping("/getusers")
+    public List<userDTO> getAllUsers(){
+        return userService.getAllUsers();
     }
 }
