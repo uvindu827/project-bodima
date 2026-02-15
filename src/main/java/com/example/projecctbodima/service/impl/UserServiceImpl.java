@@ -4,15 +4,14 @@ import com.example.projecctbodima.dto.UserDTO
 ;
 import com.example.projecctbodima.entity.User;
 import com.example.projecctbodima.repository.IUserRepo;
+import com.example.projecctbodima.service.ISmsService;
 import com.example.projecctbodima.service.IUserService;
 import jakarta.transaction.Transactional;
-import org.apache.catalina.UserDatabase;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -28,6 +27,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private ISmsService smsService;
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
@@ -45,6 +47,8 @@ public class UserServiceImpl implements IUserService {
 
         //save entity in database
         User savedUser = userRepo.save(user);
+
+        smsService.sendRegistrationSms(savedUser.getPhone(), savedUser.getFName(), Math.toIntExact(savedUser.getId()));
 
         userDTO.setId(savedUser.getId());
         userDTO.setPassword("******");
