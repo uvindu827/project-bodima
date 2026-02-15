@@ -1,7 +1,6 @@
 package com.example.projecctbodima.service;
 
-import com.example.projecctbodima.dto.UserDTO
-;
+import com.example.projecctbodima.dto.UserDTO;
 
 import java.util.List;
 
